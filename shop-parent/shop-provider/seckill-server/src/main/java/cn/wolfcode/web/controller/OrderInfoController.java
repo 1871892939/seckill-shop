@@ -81,6 +81,8 @@ public class OrderInfoController {
     @RequireLogin
     public Result<OrderInfo> find(String orderNo, HttpServletRequest request) {
         OrderInfo orderInfo = orderInfoService.findByOrderNo(orderNo);
+        System.out.println(""+orderNo);
+        System.out.println(""+orderInfo);
         String token = request.getHeader(CommonConstants.TOKEN_NAME);
         String phone = UserUtil.getUserPhone(redisTemplate, token);
         if (!phone.equals(String.valueOf(orderInfo.getUserId()))) {

@@ -23,4 +23,8 @@ public interface ISeckillProductService {
     SeckillProductVo findFromCache(Integer time, Long seckillId);
 
     List<SeckillProductVo> queryByTimeFromCache(Integer time);
+
+    void syncStockToRedis(Integer time, Long seckillId);
+
+    void incrStockCount(Long seckillId);
 }

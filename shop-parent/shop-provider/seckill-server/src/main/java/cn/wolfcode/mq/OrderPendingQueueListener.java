@@ -9,6 +9,8 @@ import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,6 +34,8 @@ public class OrderPendingQueueListener implements RocketMQListener<OrderMessage>
             OrderInfo orderInfo = orderInfoService.doSeckill(String.valueOf(orderMessage.getUserPhone()), vo);
             result.setOrderNo(orderInfo.getOrderNo());
             tag = MQConstant.ORDER_RESULT_SUCCESS_TAG;
+            Message<OrderMQResult> message = MessageBuilder.withPayload(result).build();
+            rocketMQTemplate.syncSend(MQConstant.ORDER_PAY_TIMEOUT_TOPIC, message, 3000, MQConstant.ORDER_PAY_TIMEOUT_DELAY_LEVEL);
         } catch (Exception e) {
             e.printStackTrace();
             result.setCode(SeckillCodeMsg.SECKILL_ERROR.getCode());

@@ -37,4 +37,6 @@ public interface SeckillProductMapper {
     int getStockCount(Long seckillId);
 
     SeckillProduct getSeckillProductBySeckillId(Long seckillId);
+
+//    SeckillProduct find(Long seckillId);
 }
